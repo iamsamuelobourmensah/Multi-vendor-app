@@ -20,6 +20,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late String name;
 
   late String password;
+  registerUser() async {
+    BuildContext localBuildContext = context;
+    String res = await _authController.registerNewScreen(email, name, password);
+    if (res == "Success") {
+      Future.delayed(Duration.zero, () {
+        Navigator.push(localBuildContext, MaterialPageRoute(builder: (context) {
+          return LoginScreen();
+        }));
+        ScaffoldMessenger.of(localBuildContext).showSnackBar(const SnackBar(
+            content: Text(
+                "Congratulations account has been created for you successfully")));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +191,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                     
+                      if (_formkey.currentState!.validate()) {
+                        registerUser();
+                      }
                     },
                     child: Container(
                       width: 319,
