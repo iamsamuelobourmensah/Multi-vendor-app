@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:multi_vendor_app/controller/auth_user_controller.dart';
 import 'package:multi_vendor_app/view/screens/authentication_screen/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -11,10 +12,21 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormFieldState> _formkey = GlobalKey<FormFieldState>();
+  final AuthController _authController = AuthController();
 
   late String email;
 
-  late String name;
+  late String password;
+  loginUser() async {
+    String res = await _authController.loginUser(email, password);
+    try {
+      if (res == "success") {
+        print("logged in");
+      } else {
+        print("failed");
+      }
+    } catch (e) {}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextFormField(
                     onChanged: (value) {
-                      name = value;
+                      password = value;
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -133,11 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   InkWell(
                     onTap: () {
                       if (_formkey.currentState!.validate()) {
-                        print(email);
-
-                        print(name);
-                      } else {
-                        print("failed");
+                        loginUser();
                       }
                     },
                     child: Container(

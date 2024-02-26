@@ -7,15 +7,13 @@ import 'package:multi_vendor_app/view/screens/authentication_screen/login_screen
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isAndroid
-      ? Firebase.initializeApp(
+      ? await Firebase.initializeApp(
           options: const FirebaseOptions(
               apiKey: "AIzaSyBj3tXfmHp0Aa7qXXOLAUVQLiFhjJPSd8Y",
               appId: "1:751286091542:android:39c9bf55285adfefbe9a37",
               messagingSenderId:"751286091542",
               projectId: "store-64f4d",storageBucket:"gs://store-64f4d.appspot.com" ),
-              
-              
-              )
+)
       : await Firebase.initializeApp();
 
   runApp(const MyApp());
