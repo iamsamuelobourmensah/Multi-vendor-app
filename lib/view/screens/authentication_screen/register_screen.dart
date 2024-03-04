@@ -12,8 +12,12 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  // TextEditingController _emailEditingController = TextEditingController();
+  // TextEditingController _nameEditingController = TextEditingController();
 
   final AuthController _authController = AuthController();
+
+  bool isLoading = false;
 
   late String email;
 
@@ -22,15 +26,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late String password;
   registerUser() async {
     BuildContext localBuildContext = context;
+    setState(() {
+      isLoading = true;
+    });
     String res = await _authController.registerNewScreen(email, name, password);
     if (res == "Success") {
+      Future.delayed(
+        Duration.zero,
+        () {
+          Navigator.push(
+            localBuildContext,
+            MaterialPageRoute(
+              builder: (context) {
+                return const LoginScreen();
+              },
+            ),
+          );
+          ScaffoldMessenger.of(localBuildContext).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "Congratulations account has been created for you successfully"),
+            ),
+          );
+        },
+      );
+    } else {
+      setState(() {
+        isLoading = false;
+      });
       Future.delayed(Duration.zero, () {
-        Navigator.push(localBuildContext, MaterialPageRoute(builder: (context) {
-          return LoginScreen();
-        }));
-        ScaffoldMessenger.of(localBuildContext).showSnackBar(const SnackBar(
-            content: Text(
-                "Congratulations account has been created for you successfully")));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(res)));
       });
     }
   }
@@ -274,15 +300,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                           Center(
-                            child: Text(
-                              "Sign Up",
-                              style: GoogleFonts.getFont(
-                                "Lato",
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            child: isLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : Text(
+                                    "Sign Up",
+                                    style: GoogleFonts.getFont(
+                                      "Lato",
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                           )
                         ],
                       ),
@@ -303,7 +333,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(
                             builder: (context) {
-                              return LoginScreen();
+                              return const LoginScreen();
                             },
                           ));
                         },

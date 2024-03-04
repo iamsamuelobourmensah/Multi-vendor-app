@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multi_vendor_app/controller/auth_user_controller.dart';
 import 'package:multi_vendor_app/view/screens/authentication_screen/register_screen.dart';
+import 'package:multi_vendor_app/view/screens/main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,19 +13,43 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final GlobalKey<FormFieldState> _formkey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   final AuthController _authController = AuthController();
+  final TextEditingController _emailEditingController = TextEditingController();
 
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   _emailEditingController;
+  //   super.dispose();
+
+  // }
+  bool _isLoading = false;
   late String email;
 
   late String password;
   loginUser() async {
+    BuildContext localBuildContext = context;
+    setState(() {
+      _isLoading = true;
+    });
     String res = await _authController.loginUser(email, password);
     try {
       if (res == "success") {
-        print("logged in");
+        Future.delayed(Duration.zero, () {
+          Navigator.push(localBuildContext,
+              MaterialPageRoute(builder: (context) {
+            return MainScreen();
+          }));
+        });
       } else {
-        print("failed");
+        setState(() {
+          _isLoading = false;
+        });
+        Future.delayed(Duration.zero, () {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(res)));
+      });
       }
     } catch (e) {}
   }
@@ -74,11 +100,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontWeight: FontWeight.w600, letterSpacing: 0.2),
                       )),
                   TextFormField(
+                    controller: _emailEditingController,
                     onChanged: (value) {
                       email = value;
                     },
                     validator: (value) {
-                      if (value!.isEmpty) {
+                      if (value == null) {
                         return "enter your email";
                       } else {
                         return null;
@@ -142,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.02,
                   ),
-                  InkWell(
+                  GestureDetector(
                     onTap: () {
                       if (_formkey.currentState!.validate()) {
                         loginUser();
@@ -170,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   decoration: BoxDecoration(
                                       border: Border.all(
                                         width: 12,
-                                        color: const Color(0xff1030de5),
+                                        color: const Color(0xFF102DE1),
                                       ),
                                       borderRadius: BorderRadius.circular(30)),
                                 ),
@@ -227,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           Center(
-                            child: Text(
+                            child:_isLoading? const CircularProgressIndicator(color: Colors.white,): Text(
                               "Sign in",
                               style: GoogleFonts.getFont(
                                 "Lato",
