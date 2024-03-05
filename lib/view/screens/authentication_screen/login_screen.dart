@@ -24,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //   super.dispose();
 
   // }
+  bool _isObscure = true;
   bool _isLoading = false;
   late String email;
 
@@ -47,9 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
           _isLoading = false;
         });
         Future.delayed(Duration.zero, () {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(res)));
-      });
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(res)));
+        });
       }
     } catch (e) {}
   }
@@ -134,6 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: MediaQuery.sizeOf(context).height * 0.02,
                   ),
                   TextFormField(
+                    obscureText: _isObscure,
                     onChanged: (value) {
                       password = value;
                     },
@@ -162,8 +164,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 20,
                           ),
                         ),
-                        suffixIcon: const Icon(
-                          Icons.visibility,
+                        suffixIcon: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                          child:  Icon( _isObscure?
+                            Icons.visibility : Icons.visibility_off
+                          ),
                         )),
                   ),
                   SizedBox(
@@ -254,15 +263,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           Center(
-                            child:_isLoading? const CircularProgressIndicator(color: Colors.white,): Text(
-                              "Sign in",
-                              style: GoogleFonts.getFont(
-                                "Lato",
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            child: _isLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : Text(
+                                    "Sign in",
+                                    style: GoogleFonts.getFont(
+                                      "Lato",
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                           )
                         ],
                       ),

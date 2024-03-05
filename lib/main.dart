@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:multi_vendor_app/view/screens/authentication_screen/register_screen.dart';
+import 'package:multi_vendor_app/view/screens/nav_screen/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,13 +13,13 @@ void main() async {
           options: const FirebaseOptions(
               apiKey: "AIzaSyBj3tXfmHp0Aa7qXXOLAUVQLiFhjJPSd8Y",
               appId: "1:751286091542:android:39c9bf55285adfefbe9a37",
-              messagingSenderId:"751286091542",
-              projectId: "store-64f4d",storageBucket:"gs://store-64f4d.appspot.com" ),
-)
+              messagingSenderId: "751286091542",
+              projectId: "store-64f4d",
+              storageBucket: "gs://store-64f4d.appspot.com"),
+        )
       : await Firebase.initializeApp();
 
   runApp(const MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
@@ -26,6 +28,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -47,7 +51,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: RegisterScreen(),
+      home: HomeScreen(),
     );
   }
 }

@@ -24,6 +24,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late String name;
 
   late String password;
+  bool _isObscure = true;
+
   registerUser() async {
     BuildContext localBuildContext = context;
     setState(() {
@@ -180,6 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: MediaQuery.sizeOf(context).height * 0.02,
                   ),
                   TextFormField(
+                    obscureText: _isObscure,
                     onChanged: (value) {
                       password = value;
                     },
@@ -208,8 +211,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 20,
                           ),
                         ),
-                        suffixIcon: const Icon(
-                          Icons.visibility,
+                        suffixIcon: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                          child: Icon( _isObscure?
+                            Icons.visibility :Icons.visibility_off
+                          ),
                         )),
                   ),
                   SizedBox(
