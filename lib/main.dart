@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multi_vendor_app/view/screens/authentication_screen/register_screen.dart';
+import 'package:multi_vendor_app/view/screens/main_screen.dart';
 import 'package:multi_vendor_app/view/screens/nav_screen/home_screen.dart';
 
 void main() async {
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: MainScreen(),
     );
   }
 }
