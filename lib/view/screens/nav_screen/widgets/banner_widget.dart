@@ -11,6 +11,9 @@ class Bannerwidget extends StatefulWidget {
 class _BannerwidgetState extends State<Bannerwidget> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      height: 170,
+      width: MediaQuery.of,
+    );
   }
 }
