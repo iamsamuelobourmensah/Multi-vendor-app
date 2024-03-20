@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:multi_vendor_app/view/screens/authentication_screen/login_screen.dart';
 import 'package:multi_vendor_app/view/screens/authentication_screen/register_screen.dart';
 import 'package:multi_vendor_app/view/screens/main_screen.dart';
 import 'package:multi_vendor_app/view/screens/nav_screen/home_screen.dart';
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
